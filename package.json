@@ -1,0 +1,34 @@
+{
+  "name": "dsc.eco",
+  "version": "1.0.0",
+  "description": "A economy package for discord.js",
+  "main": "lib/Economy.js",
+  "types": "lib/Economy.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jurgenjacobsen/dsc.eco.git"
+  },
+  "keywords": [
+    "economy",
+    "discord",
+    "eco",
+    "db"
+  ],
+  "author": "jurgenjacobsen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jurgenjacobsen/dsc.eco/issues"
+  },
+  "homepage": "https://github.com/jurgenjacobsen/dsc.eco#readme",
+  "dependencies": {
+    "dsc.db": "^1.2.2",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.171",
+    "typescript": "^4.3.5"
+  }
+}
