@@ -16,7 +16,7 @@ export class Base {
 
   public getCooldown(collectedTime: Date, timeout: number) {
     let _ago = new Date().getTime() - collectedTime.getTime();
-    let remaining = _ago + timeout;
+    let remaining = _ago - timeout;
     return this.ms(remaining);
   }
 }
