@@ -1,12 +1,15 @@
 import { Database } from "dsc.db";
 import _ from 'lodash';
+import { Base } from "./Base";
 
-export class Economy {
+export class Economy extends Base {
   public db: Database;
   public roles: Role[];
   public items: Item[];
   private defaultData: UserData;
   constructor(options: EconomyOptions, custom?: EconomyCustom) {
+    super();
+
     this.roles = [];
     this.items = [];
     this.defaultData = {
@@ -189,7 +192,7 @@ export class Economy {
 
       if(data.timeouts.work) {
         if(new Date().getTime() - data.timeouts.work.getTime() < timeout) {
-          return resolve({ err: 'COOL_DOWN' });
+          return resolve({ err: 'COOL_DOWN', cooldown: this.getCooldown(data.timeouts.work, timeout) });
         }
       };
       await this.db.set(`${userID}.timeouts.work`, new Date());
@@ -291,6 +294,7 @@ export interface WorkResponse {
   err: WorkErr | false;
   levelUp?: boolean;
   data?: any;
+  cooldown?: { days: number, hours: number, minutes: number, seconds: number, milliseconds: number, microseconds: number, nanoseconds: number };
 }
 
 export interface BuyResponse {
