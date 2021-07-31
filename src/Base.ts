@@ -13,9 +13,4 @@ export class Base {
         nanoseconds: apply(ms * 1e6) % 1000
     }  
   }
-
-  public getCooldown(collectedTime: Date, timeout: number) {
-    let _ago = collectedTime.getTime() + timeout;
-    return this.ms(_ago);
-  }
 }

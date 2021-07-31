@@ -192,7 +192,7 @@ export class Economy extends Base {
 
       if(data.timeouts.work) {
         if(new Date().getTime() - data.timeouts.work.getTime() < timeout) {
-          return resolve({ err: 'COOL_DOWN', cooldown: this.getCooldown(data.timeouts.work, timeout) });
+          return resolve({ err: 'COOL_DOWN', lastWork: data.timeouts.work });
         }
       };
       await this.db.set(`${userID}.timeouts.work`, new Date());
@@ -294,7 +294,7 @@ export interface WorkResponse {
   err: WorkErr | false;
   levelUp?: boolean;
   data?: any;
-  cooldown?: { days: number, hours: number, minutes: number, seconds: number, milliseconds: number, microseconds: number, nanoseconds: number };
+  lastWork?: Date;
 }
 
 export interface BuyResponse {
