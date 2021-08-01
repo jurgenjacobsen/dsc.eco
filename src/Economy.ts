@@ -237,7 +237,7 @@ export class Economy extends Base {
       }
 
       data = await this.db.add(`${userID}.money`, Math.floor(money));
-      resolve({ err: false, levelUp: lvlUp, data: data })
+      resolve({ err: false, levelUp: lvlUp, received: Math.floor(money), userdata: data });
     });
   }
 }
@@ -293,7 +293,8 @@ export interface EconomyCustom {
 export interface WorkResponse {
   err: WorkErr | false;
   levelUp?: boolean;
-  data?: any;
+  received?: number;
+  userdata?: UserData;
   lastWork?: Date;
 }
 
