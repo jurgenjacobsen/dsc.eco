@@ -23,8 +23,6 @@ export class Store extends EventEmitter {
       let _item = this.eco.items.find((i) => i.id === _itemID);
       if(!_item) return;
       if(i.customId.startsWith('ITEM_') && i.customId.endsWith('_BUY')) {
-        i.defer();
-
         this.eco.buy(i.user.id, _item.id, i.guildId as string)
         .then((res) => {
           if(res.success) return i.deferUpdate();
@@ -32,7 +30,7 @@ export class Store extends EventEmitter {
       }
     });
   }
-  
+
   public publish(itemID: string, custom: PublishCustomOptions) {
     return new Promise(async (resolve, reject) => {
       let item = this.eco.items.find((i) => i.id === itemID);
@@ -45,10 +43,11 @@ export class Store extends EventEmitter {
       .setFooter(item.id)
       .setAuthor(item.name);
       
+      if(custom.imageURL) embed.setImage(custom.imageURL);
       if(item.description) embed.setDescription(item.description);
       if(item.roleID) embed.addField(`Cargo`, `<@&${item.roleID}>`);
 
-      let valueBtn = new MessageButton().setCustomId(`ITEM_${item.id}_VALUE`).setDisabled(true).setStyle('DANGER').setLabel(`${item.price}`);
+      let valueBtn = new MessageButton().setCustomId(`ITEM_${item.id}_VALUE`).setDisabled(true).setStyle('DANGER').setLabel(`${custom.priceLabel ? custom.priceLabel : 'Price'} ${item.price}`);
       let buyBtn = new MessageButton().setCustomId(`ITEM_${item.id}_BUY`).setStyle('SUCCESS').setLabel(`${custom.buyLabel ? custom.buyLabel : 'Buy'}`);
       let row = new MessageActionRow().addComponents([valueBtn, buyBtn]);
 
@@ -68,4 +67,6 @@ export interface StoreConfig {
 export interface PublishCustomOptions {
   embedColor: ColorResolvable;
   buyLabel: string;
+  priceLabel: string;
+  imageURL?: string;
 }
