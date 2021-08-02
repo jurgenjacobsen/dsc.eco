@@ -1,13 +1,11 @@
 import { Client, ColorResolvable, MessageActionRow, MessageButton, MessageEmbed, TextChannel } from "discord.js";
-import EventEmitter from "events";
 import { Economy } from "./Economy";
 
-export class Store extends EventEmitter {
+export class Store {
   public config: StoreConfig;
   public eco: Economy;
   private bot: Client;
   constructor(bot: Client, eco: Economy, config: StoreConfig) {
-    super();
 
     this.config = config;
     this.eco = eco;

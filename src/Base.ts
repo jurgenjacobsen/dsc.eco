@@ -1,5 +1,9 @@
-export class Base {
-  constructor() { };
+import EventEmitter from "events";
+
+export class Base extends EventEmitter {
+  constructor() { 
+    super();
+  };
 
   public ms(ms: number) {
     const apply = ms > 0 ? Math.floor : Math.ceil;
