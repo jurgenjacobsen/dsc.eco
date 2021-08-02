@@ -274,6 +274,7 @@ export interface Item {
   quality: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   minlvl?: number;
   roleID?: string;
+  callback?: ItemCallback;
 }
 
 export interface Role {
@@ -315,6 +316,10 @@ export interface BuyResponse {
   err: BuyErr | false;
   success?: boolean;
   data?: any;
+}
+
+export interface ItemCallback {
+  (eco: Economy): Promise<any | void>;
 }
 
 export type BuyErr = 'MIN_LEVEL' | 'NOT_ENOUGH_MONEY';
