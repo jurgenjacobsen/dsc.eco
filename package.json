@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/jurgenjacobsen/dsc.eco#readme",
   "dependencies": {
+    "discord.js": "^13.0.0-dev.t1627906063.6e0ea02",
     "dsc.db": "^1.2.2",
+    "events": "^3.3.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

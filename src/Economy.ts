@@ -1,3 +1,4 @@
+import { Client } from "discord.js";
 import { Database } from "dsc.db";
 import _ from 'lodash';
 import { Base } from "./Base";
@@ -7,7 +8,8 @@ export class Economy extends Base {
   public roles: Role[];
   public items: Item[];
   private defaultData: UserData;
-  constructor(options: EconomyOptions, custom?: EconomyCustom) {
+  private bot: Client;
+  constructor(bot: Client, options: EconomyOptions, custom?: EconomyCustom) {
     super();
 
     this.roles = [];
@@ -34,6 +36,8 @@ export class Economy extends Base {
       },
       defaultData: this.defaultData,
     });
+    
+    this.bot = bot;
 
     custom?.roles?.map((obj) => {
       if(this.roles.find((x) => x.id === obj.id)) throw new Error(`There's an existing roles with the same ID!`);
@@ -162,14 +166,20 @@ export class Economy extends Base {
     });
   }
 
-  public buy(userID: string, itemID: string): Promise<BuyResponse> {
+  public buy(userID: string, itemID: string, guildID: string): Promise<BuyResponse> {
     return new Promise(async (resolve, reject) => {
       let item = this.items.find((x) => x.id === itemID);
       if(!item) return reject('Item not found!');
+      if(!guildID && item.roleID) return reject('To buy an item with roleID propertie you should provide an guildID');
       let data: UserData = await this.db.fetch(userID);
       if(item.minlvl && (data.work.level < item.minlvl)) return resolve({ err: 'MIN_LEVEL' });
       if(item.price > data.money) return resolve({ err: 'NOT_ENOUGH_MONEY' });
       await this.db.subtract(`${userID}.money`, item.price);
+      if(item.roleID) {
+        let guild = await this.bot.guilds.cache.get(guildID);
+        let member = guild?.members.cache.get(userID);
+        await member?.roles.add(item.roleID);
+      };
       data = await this.db.push(`${userID}.items`, itemID);
       resolve({ err: false, success: true, data: data });
     });
@@ -258,9 +268,11 @@ export interface UserData {
 export interface Item {
   id: string;
   name: string;
+  description?: string;
   price: number;
   quality: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   minlvl?: number;
+  roleID?: string;
 }
 
 export interface Role {
