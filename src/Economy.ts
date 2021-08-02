@@ -183,6 +183,7 @@ export class Economy extends Base {
       data = await this.db.push(`${userID}.items`, itemID);
       resolve({ err: false, success: true, data: data });
       this.emit('buy', userID, data, item);
+      if(item.callback) item.callback(this, userID);
     });
   }
 
@@ -319,7 +320,7 @@ export interface BuyResponse {
 }
 
 export interface ItemCallback {
-  (eco: Economy): Promise<any | void>;
+  (eco: Economy, userID: string): Promise<any | void>;
 }
 
 export type BuyErr = 'MIN_LEVEL' | 'NOT_ENOUGH_MONEY';
