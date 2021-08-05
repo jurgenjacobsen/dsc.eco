@@ -1,4 +1,3 @@
-import { MessageAttachment } from "discord.js";
 import { Economy, UserData } from "./Economy";
 
 export class FabricManager {
