@@ -123,10 +123,10 @@ export class Fabric {
   }
 
   public valueToReceive(): number {
-    return Math.floor((((this.level) * (this.employees * 0.25) * 100) / 2) + (this.xp * 0.25));
+    return Math.floor((((this.level) * (this.employees * 0.25) * 50) / 2) + (this.xp * 0.15));
   }
 
   public valueToPay(): number {
-    return Math.floor((((this.level * 0.5) * (this.employees * 0.5) * 100) / 2));
+    return Math.floor((((this.level * 0.5) * (this.employees * 0.5) * 100)));
   }
 }
