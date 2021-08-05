@@ -71,7 +71,7 @@ export class FabricManager {
       let eprice = fabric.level * 50 * number;
       let maxEmp = fabric.level * 15;
 
-      if(maxEmp >= fabric.employees) {
+      if(fabric.employees >= maxEmp) {
         return resolve({ err: 'MAX_EMPLOYEES' });
       }
 
