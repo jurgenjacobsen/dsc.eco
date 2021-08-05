@@ -8,10 +8,60 @@ export class FabricManager {
 
   public fetch(userID: string): Promise<Fabric> {
     return new Promise(async (resolve) => {
-      let data = await this.eco.db.ensure(userID);
+      let data: UserData = await this.eco.db.ensure(userID);
+      if(!data.fabric.lastPayment) {
+        this.eco.db.set(`${userID}.fabric.lastPayment`, new Date());
+      };
       return resolve(new Fabric(data));
     });
   }
+
+  public pay(userID: string): Promise<Fabric> {
+    return new Promise(async (resolve) => {
+      let fabric = await this.fetch(userID);
+      
+      let valueToPay = Math.floor((((fabric.level * 0.5) * (fabric.employees * 0.5) * 100) / 2));
+
+      if(fabric.latePayment) {
+        this.eco.substract(userID, valueToPay);
+      }
+      
+      fabric.latePayment = false;
+      resolve(fabric);
+    });
+  }
+
+  public collect(userID: string): Promise<Collect> {
+    return new Promise(async (resolve) => {
+      let data = await this.eco.db.fetch(userID);
+      let fabric: Fabric = new Fabric(data);
+
+      if(fabric.latePayment) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
+
+      let valueToReceive = (((fabric.level) * (fabric.employees * 0.25) * 100) / 2) + (fabric.xp * 0.25);
+      let xp = this.eco.random(10, 19);
+      let lvlup = false;
+
+      let nxp = fabric.getNeededXP();
+      data = await this.eco.db.add(`${userID}.fabric.xp`, xp); fabric = new Fabric(data);
+      if(fabric.xp >= nxp) {
+        await this.eco.db.add(`${userID}.fabric.level`, 1);
+        await this.eco.db.subtract(`${userID}.fabric.xp`, nxp);
+        lvlup = true;
+      };
+
+      data = this.eco.give(userID, valueToReceive);
+
+      resolve({ fabric: new Fabric(data), received: valueToReceive, levelUp: lvlup, err: false });
+    });
+  }
+}
+
+export interface Collect {
+  fabric: Fabric;
+  received: number;
+  levelUp: boolean;
+  err: boolean;
 }
 
 export class Fabric {
@@ -32,5 +82,9 @@ export class Fabric {
     if(this.lastPayment && ((new Date().getTime() - this.lastPayment.getTime()) > 7 * 24 * 60 * 60 * 1000)) {
       this.latePayment = true;
     }
+  }
+
+  public getNeededXP(): number {
+    return (this.level * this.level * 200);
   }
 }
