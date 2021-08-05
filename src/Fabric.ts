@@ -112,7 +112,7 @@ export class Fabric {
 
     this.canCollect = true;
     if(this.lastCollectIncome) {
-      if(new Date().getTime() - this.lastCollectIncome.getTime() < ((1 * 60 * 60 * 1000) * this.level)) {
+      if(new Date().getTime() - this.lastCollectIncome.getTime() < ((1 * 60 * 60 * 1000) + (1 * 60 * 60 * 1000) * this.level)) {
         this.canCollect = false;
       }
     }
@@ -127,6 +127,6 @@ export class Fabric {
   }
 
   public valueToPay(): number {
-    return Math.floor((((this.level * 0.5) * (this.employees * 0.5) * 100)));
+    return Math.floor((((this.level) * (this.employees * 0.5) * 100)));
   }
 }
