@@ -123,7 +123,7 @@ export class Economy extends Base {
 
   public give(userID: string, amount: number): Promise<UserData> {
     return new Promise(async (resolve, reject) => {
-      if(typeof amount !== 'number' || amount !> 0) reject('Amount must be positive to be given!');
+      if(typeof amount !== 'number' || amount < 0) reject('Amount must be positive to be given!');
       let data = await this.db.ensure(userID);
       if(!data) return reject(`User not found!`);
       let _new = await this.db.add(`${userID}.money`, amount);
