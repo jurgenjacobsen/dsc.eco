@@ -20,7 +20,7 @@ export class FabricManager {
     return new Promise(async (resolve) => {
       let fabric = await this.fetch(userID);
       
-      let valueToPay = Math.floor((((fabric.level * 0.5) * (fabric.employees * 0.5) * 100) / 2));
+      let valueToPay = fabric.valueToPay();
 
       if(fabric.latePayment) {
         this.eco.substract(userID, valueToPay);
@@ -38,7 +38,7 @@ export class FabricManager {
 
       if(fabric.latePayment) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
 
-      let valueToReceive = (((fabric.level) * (fabric.employees * 0.25) * 100) / 2) + (fabric.xp * 0.25);
+      let valueToReceive = fabric.valueToReceived();
       let xp = this.eco.random(10, 19);
       let lvlup = false;
 
@@ -86,5 +86,13 @@ export class Fabric {
 
   public getNeededXP(): number {
     return (this.level * this.level * 200);
+  }
+
+  public valueToReceived(): number {
+    return Math.floor((((this.level) * (this.employees * 0.25) * 100) / 2) + (this.xp * 0.25));
+  }
+
+  public valueToPay(): number {
+    return Math.floor((((this.level * 0.5) * (this.employees * 0.5) * 100) / 2));
   }
 }
