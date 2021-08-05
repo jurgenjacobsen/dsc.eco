@@ -69,13 +69,14 @@ export class FabricManager {
       let data: UserData = await this.eco.db.fetch(userID);
       let fabric = new Fabric(data);
       let eprice = fabric.level * 50 * number;
+      let maxEmp = fabric.level * 15;
 
-      if(fabric.level * 15 >= fabric.employees) {
-        return resolve({ err: true });
+      if(maxEmp >= fabric.employees) {
+        return resolve({ err: 'MAX_EMPLOYEES' });
       }
 
       if(eprice > data.money) {
-        return resolve({ err: true });
+        return resolve({ err: 'NOT_ENOUGH_MONEY' });
       }
 
       await this.eco.db.add(`${userID}.fabric.employees`, number);
