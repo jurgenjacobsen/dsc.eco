@@ -64,7 +64,7 @@ export class FabricManager {
     return new Promise(async (resolve) => {
       let data: UserData = await this.eco.db.fetch(userID);
       let fabric = new Fabric(data);
-      let eprice = fabric.level * 50 * number;
+      let eprice = fabric.level * 125 * number;
       let maxEmp = fabric.level * 15;
 
       if(fabric.employees >= maxEmp) {
