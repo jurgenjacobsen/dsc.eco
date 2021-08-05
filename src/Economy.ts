@@ -2,6 +2,7 @@ import { Client } from "discord.js";
 import { Database } from "dsc.db";
 import _ from 'lodash';
 import { Base } from "./Base";
+import { FabricManager } from "./Fabric";
 
 export class Economy extends Base {
   public db: Database;
@@ -24,6 +25,13 @@ export class Economy extends Base {
       },
       timeouts: {
         work: null,
+        fabricIncome: null,
+      },
+      fabric: {
+        xp: 0,
+        level: 1,
+        employees: 1,
+        lastPayment: null,
       }
     };
 
@@ -48,6 +56,10 @@ export class Economy extends Base {
       if(this.items.find((x) => x.id === obj.id)) throw new Error(`There's an existing roles with the same ID!`);
       this.items.push(obj);
     });
+  }
+
+  public get fabrics(): FabricManager {
+    return new FabricManager(this);;
   }
 
   public random(min: number, max: number): number {
@@ -264,6 +276,13 @@ export interface UserData {
   }
   timeouts: {
     work: Date | null;
+    fabricIncome: Date | null;
+  };
+  fabric: {
+    xp: number;
+    level: number;
+    employees: number;
+    lastPayment: Date | null;
   }
 };
 
