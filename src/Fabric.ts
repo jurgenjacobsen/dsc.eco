@@ -34,8 +34,4 @@ export class Fabric {
       this.latePayment = true;
     }
   }
-
-  public render(): MessageAttachment {
-    return new MessageAttachment(`../assets/${this.level}.png`, 'fabric.png');
-  }
 }
