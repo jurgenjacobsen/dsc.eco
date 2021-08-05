@@ -43,6 +43,8 @@ export class FabricManager {
         }
       }
 
+      await this.eco.db.set(`${userID}.timeouts.fabricIncome`, new Date());
+
       let valueToReceive = fabric.valueToReceive();
       let xp = Math.floor(this.eco.random(10, 19));
       let lvlup = false;
