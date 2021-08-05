@@ -38,11 +38,7 @@ export class FabricManager {
       let fabric: Fabric = new Fabric(data);
 
       if(fabric.latePayment) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
-      if(fabric.lastCollectIncome) {
-        if(new Date().getTime() - fabric.lastCollectIncome.getTime() < (timeout * fabric.level)) {
-          return resolve({ fabric: fabric, received: 0, levelUp: false, err: true });
-        }
-      }
+      if(fabric.canCollect) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
 
       await this.eco.db.set(`${userID}.timeouts.fabricIncome`, new Date());
 
@@ -98,6 +94,7 @@ export class Fabric {
   public xp: number;
   public level: number;
   public latePayment: boolean;
+  public canCollect: boolean;
   public employees: number;
   public lastPayment: Date | null;
   public lastCollectIncome: Date | null;
@@ -111,6 +108,13 @@ export class Fabric {
 
     if(this.lastPayment && ((new Date().getTime() - this.lastPayment.getTime()) > 7 * 24 * 60 * 60 * 1000)) {
       this.latePayment = true;
+    }
+
+    this.canCollect = true;
+    if(this.lastCollectIncome) {
+      if(new Date().getTime() - this.lastCollectIncome.getTime() < ((1 * 60 * 60 * 1000) * this.level)) {
+        this.canCollect = false;
+      }
     }
   }
 
