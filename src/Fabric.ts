@@ -31,12 +31,17 @@ export class FabricManager {
     });
   }
 
-  public collect(userID: string): Promise<Collect> {
+  public collect(userID: string, timeout=1*60*60*1000): Promise<Collect> {
     return new Promise(async (resolve) => {
       let data = await this.eco.db.fetch(userID);
       let fabric: Fabric = new Fabric(data);
 
       if(fabric.latePayment) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
+      if(fabric.lastCollectIncome) {
+        if(new Date().getTime() - fabric.lastCollectIncome.getTime() < (timeout * fabric.level)) {
+          return resolve({ fabric: fabric, received: 0, levelUp: false, err: true });
+        }
+      }
 
       let valueToReceive = fabric.valueToReceive();
       let xp = this.eco.random(10, 19);
