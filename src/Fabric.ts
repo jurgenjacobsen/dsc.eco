@@ -38,7 +38,7 @@ export class FabricManager {
 
       if(fabric.latePayment) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
 
-      let valueToReceive = fabric.valueToReceived();
+      let valueToReceive = fabric.valueToReceive();
       let xp = this.eco.random(10, 19);
       let lvlup = false;
 
@@ -88,7 +88,7 @@ export class Fabric {
     return (this.level * this.level * 200);
   }
 
-  public valueToReceived(): number {
+  public valueToReceive(): number {
     return Math.floor((((this.level) * (this.employees * 0.25) * 100) / 2) + (this.xp * 0.25));
   }
 
