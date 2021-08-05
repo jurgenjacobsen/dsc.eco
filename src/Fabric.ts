@@ -38,7 +38,7 @@ export class FabricManager {
       let fabric: Fabric = new Fabric(data);
 
       if(fabric.latePayment) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
-      if(fabric.canCollect) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
+      if(!fabric.canCollect) return resolve({fabric: fabric, received: 0, levelUp: false, err: true });
 
       await this.eco.db.set(`${userID}.timeouts.fabricIncome`, new Date());
 
