@@ -55,7 +55,7 @@ export class FabricManager {
         lvlup = true;
       };
 
-      data = await this.eco.give(userID, valueToReceive);
+      data = await this.eco.db.add(`${userID}.money`, valueToReceive);
       
       resolve({ fabric: new Fabric(data), received: valueToReceive, levelUp: lvlup, err: false });
     });
