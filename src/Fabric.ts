@@ -24,6 +24,7 @@ export class FabricManager {
 
       if(fabric.latePayment) {
         this.eco.substract(userID, valueToPay);
+        this.eco.db.set(`${userID}.fabric.lastPayment`, new Date());
       }
       
       fabric.latePayment = false;
