@@ -44,7 +44,7 @@ export class FabricManager {
       }
 
       let valueToReceive = fabric.valueToReceive();
-      let xp = this.eco.random(10, 19);
+      let xp = Math.floor(this.eco.random(10, 19));
       let lvlup = false;
 
       let nxp = fabric.getNeededXP();
@@ -55,8 +55,8 @@ export class FabricManager {
         lvlup = true;
       };
 
-      data = this.eco.give(userID, valueToReceive);
-
+      data = await this.eco.give(userID, valueToReceive);
+      
       resolve({ fabric: new Fabric(data), received: valueToReceive, levelUp: lvlup, err: false });
     });
   }
