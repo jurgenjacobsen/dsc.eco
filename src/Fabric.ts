@@ -32,7 +32,7 @@ export class FabricManager {
     });
   }
 
-  public collect(userID: string, timeout=1*60*60*1000): Promise<Collect> {
+  public collect(userID: string): Promise<Collect> {
     return new Promise(async (resolve) => {
       let data = await this.eco.db.fetch(userID);
       let fabric: Fabric = new Fabric(data);
