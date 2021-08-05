@@ -63,6 +63,27 @@ export class FabricManager {
       resolve({ fabric: new Fabric(data), received: valueToReceive, levelUp: lvlup, err: false });
     });
   }
+
+  public addEmployees(userID: string, number: number) {
+    return new Promise(async (resolve) => {
+      let data: UserData = await this.eco.db.fetch(userID);
+      let fabric = new Fabric(data);
+      let eprice = fabric.level * 50 * number;
+
+      if(fabric.level * 15 >= fabric.employees) {
+        return resolve({ err: true });
+      }
+
+      if(eprice > data.money) {
+        return resolve({ err: true });
+      }
+
+      await this.eco.db.add(`${userID}.fabric.employees`, number);
+      await this.eco.db.subtract(`${userID}.money`, eprice);
+      
+      return resolve({ err: false, fabric: await this.fetch(userID) });
+    });
+  }
 }
 
 export interface Collect {
