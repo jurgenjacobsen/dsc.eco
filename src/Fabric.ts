@@ -42,7 +42,7 @@ export class FabricManager {
 
       await this.eco.db.set(`${userID}.timeouts.fabricIncome`, new Date());
 
-      let valueToReceive = fabric.valueToReceive();
+      let valueToReceive = Math.floor(fabric.valueToReceive());
       let xp = Math.floor(this.eco.random(10, 19));
       let lvlup = false;
 
@@ -60,11 +60,11 @@ export class FabricManager {
     });
   }
 
-  public addEmployees(userID: string, number: number) {
+  public addEmployees(userID: string, number: number): Promise<EmployeeResponse> {
     return new Promise(async (resolve) => {
       let data: UserData = await this.eco.db.fetch(userID);
       let fabric = new Fabric(data);
-      let eprice = fabric.level * 125 * number;
+      let eprice = (fabric.level * 125) * number;
       let maxEmp = fabric.level * 15;
 
       if(fabric.employees >= maxEmp) {
@@ -81,6 +81,11 @@ export class FabricManager {
       return resolve({ err: false, fabric: await this.fetch(userID) });
     });
   }
+}
+
+export interface EmployeeResponse {
+  err: string | boolean;
+  fabric?: Fabric;
 }
 
 export interface Collect {
