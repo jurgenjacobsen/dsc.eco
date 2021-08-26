@@ -1,5 +1,6 @@
 import { EcoUser } from '../main/interfaces';
 import { FabricsManager } from '../managers/FabricsManager';
+import { User } from './User';
 
 let hour = 1 * 60 * 60 * 1000;
 
@@ -11,9 +12,9 @@ export class Fabric {
   public latePayment: boolean;
   public lastCollect: Date | null;
   public fabricPayment: Date | null;
-  public user: EcoUser;
+  public user: User;
   private fm: FabricsManager;
-  constructor(fm: FabricsManager, data: EcoUser) {
+  constructor(fm: FabricsManager, data: User) {
     this.level = data.fabric.level;
     this.xp = data.fabric.xp;
     this.employees = data.fabric.employees;

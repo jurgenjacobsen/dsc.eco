@@ -1,8 +1,9 @@
 import { Data } from 'dsc.db';
 import { FabricsManager } from '../managers/FabricsManager';
 import { Store } from '../structures/Store';
+import { User } from '../structures/User';
 import { Base } from './Base';
-import { EconomyOptions, EcoUser, LeaderboardOptions, LeaderboardUser, WorkOptions, WorkResponse } from './interfaces';
+import { EconomyOptions, LeaderboardOptions, LeaderboardUser, WorkOptions, WorkResponse } from './interfaces';
 
 export class Economy extends Base {
   constructor(options: EconomyOptions) {
@@ -17,7 +18,7 @@ export class Economy extends Base {
     return new FabricsManager(this);
   }
 
-  public fetch(userID: string, guildID?: string): Promise<EcoUser | null> {
+  public fetch(userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
       if (!userID || typeof userID !== 'string') throw new Error('userID should be a string');
       if (guildID && typeof guildID !== 'string') throw new Error('guildID should be a string');
@@ -28,7 +29,7 @@ export class Economy extends Base {
     });
   }
 
-  public ensure(userID: string, guildID?: string): Promise<EcoUser> {
+  public ensure(userID: string, guildID?: string): Promise<User> {
     return new Promise(async (resolve) => {
       let data = await this.fetch(userID, guildID);
       if (data) return resolve(data);
@@ -41,12 +42,12 @@ export class Economy extends Base {
         inventory: [],
         timeouts: { work: null, fabric: null },
         fabric: { xp: 0, level: 0, employees: 0 },
-      } as EcoUser);
+      } as User);
       return resolve(raw.data);
     });
   }
 
-  public delete(userID: string, guildID?: string): Promise<EcoUser | null> {
+  public delete(userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
       let query = guildID ? { 'data.userID': userID, 'data.guildID': guildID } : { 'data.userID': userID };
       let raw = await this.db.delete(query);
@@ -63,7 +64,7 @@ export class Economy extends Base {
       raw
         .sort((a, b) => b.data.bank - a.data.bank)
         .map((r) => r.data)
-        .forEach((r: EcoUser, i) => {
+        .forEach((r: User, i) => {
           arr.push({
             pos: i + 1,
             userID: r.userID,
@@ -77,7 +78,7 @@ export class Economy extends Base {
     });
   }
 
-  public list(guildID?: string): Promise<EcoUser[] | null> {
+  public list(guildID?: string): Promise<User[] | null> {
     return new Promise(async (resolve) => {
       let raw =
         typeof guildID !== 'string' ? ((await this.db.schema.find({ 'data.guildID': null })) as Data[]) : ((await this.db.schema.find({ 'data.guildID': guildID })) as Data[]);
@@ -86,7 +87,7 @@ export class Economy extends Base {
     });
   }
 
-  public addMoney(amount: number, userID: string, guildID?: string): Promise<EcoUser | null> {
+  public addMoney(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
@@ -95,7 +96,7 @@ export class Economy extends Base {
     });
   }
 
-  public removeMoney(amount: number, userID: string, guildID?: string): Promise<EcoUser | null> {
+  public removeMoney(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
@@ -104,7 +105,7 @@ export class Economy extends Base {
     });
   }
 
-  public transfer(amount: number, from: string, to: string, guildID: string): Promise<EcoUser | null> {
+  public transfer(amount: number, from: string, to: string, guildID: string): Promise<User | null> {
     return new Promise(async (resolve) => {
       let user = await this.fetch(from);
       if (!user || user.wallet < amount) return resolve(null);
@@ -116,7 +117,7 @@ export class Economy extends Base {
     });
   }
 
-  public deposit(amount: number, userID: string, guildID?: string): Promise<EcoUser | null> {
+  public deposit(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
@@ -128,7 +129,7 @@ export class Economy extends Base {
     });
   }
 
-  public withdraw(amount: number, userID: string, guildID?: string): Promise<EcoUser | null> {
+  public withdraw(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
@@ -157,7 +158,7 @@ export class Economy extends Base {
       await this.db.set(`${this.key(userID, guildID)}.timeouts.work`, new Date());
       await this.db.add(`${this.key(userID, guildID)}.wallet`, money);
 
-      return resolve({ err: null, user: (await this.fetch(userID, guildID)) as EcoUser });
+      return resolve({ err: null, user: (await this.fetch(userID, guildID)) as User });
     });
   }
 }
