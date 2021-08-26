@@ -1,1 +1,4 @@
 test
+docs
+.prettierrc
+tsconfig.json
