@@ -1,11 +1,14 @@
 {
   "name": "dsc.eco",
-  "version": "1.1.30",
-  "description": "A economy package for discord.js",
-  "main": "lib/Economy.js",
-  "types": "lib/Economy.d.ts",
+  "version": "2.0.0",
+  "description": "A quick way to implement economy features to your discord bot",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "tsc",
+    "docs": "typedoc --theme minimal --out docs src/",
+    "pretty": "prettier --config .prettierrc \"./src/**/*.ts\"  \"./lib/**/*.js\" --write",
+    "build": "npm run tsc && npm run pretty && npm run docs"
   },
   "repository": {
     "type": "git",
@@ -15,22 +18,20 @@
     "economy",
     "discord",
     "eco",
-    "db"
+    "dsc"
   ],
   "author": "jurgenjacobsen",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/jurgenjacobsen/dsc.eco/issues"
   },
   "homepage": "https://github.com/jurgenjacobsen/dsc.eco#readme",
-  "dependencies": {
-    "discord.js": "^13.0.0-dev.t1627906063.6e0ea02",
-    "dsc.db": "^1.2.2",
-    "events": "^3.3.0",
-    "lodash": "^4.17.21"
+  "engines": {
+    "node": ">=16.6.0",
+    "npm": ">=7.0.0"
   },
-  "devDependencies": {
-    "@types/lodash": "^4.14.171",
-    "typescript": "^4.3.5"
+  "dependencies": {
+    "dsc.db": "^3.0.4",
+    "events": "^3.3.0"
   }
 }
