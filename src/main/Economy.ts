@@ -1,5 +1,6 @@
 import { Data } from 'dsc.db';
 import { FabricsManager } from '../managers/FabricsManager';
+import { Errors } from '../structures/Errors';
 import { Store } from '../structures/Store';
 import { User } from '../structures/User';
 import { Base } from './Base';
@@ -20,8 +21,8 @@ export class Economy extends Base {
 
   public fetch(userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
-      if (!userID || typeof userID !== 'string') throw new Error('userID should be a string');
-      if (guildID && typeof guildID !== 'string') throw new Error('guildID should be a string');
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let query = guildID ? { 'data.userID': userID, 'data.guildID': guildID } : { 'data.userID': userID };
       let raw = await this.db.fetch(query);
       if (!raw || !raw.data) return resolve(null);
@@ -31,6 +32,8 @@ export class Economy extends Base {
 
   public ensure(userID: string, guildID?: string): Promise<User> {
     return new Promise(async (resolve) => {
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let data = await this.fetch(userID, guildID);
       if (data) return resolve(data);
       let key = this.key(userID, guildID);
@@ -49,6 +52,8 @@ export class Economy extends Base {
 
   public delete(userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let query = guildID ? { 'data.userID': userID, 'data.guildID': guildID } : { 'data.userID': userID };
       let raw = await this.db.delete(query);
       if (!raw || !raw.data) return resolve(null);
@@ -80,6 +85,7 @@ export class Economy extends Base {
 
   public list(guildID?: string): Promise<User[] | null> {
     return new Promise(async (resolve) => {
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let raw =
         typeof guildID !== 'string' ? ((await this.db.schema.find({ 'data.guildID': null })) as Data[]) : ((await this.db.schema.find({ 'data.guildID': guildID })) as Data[]);
       if (!raw) return resolve(null);
@@ -89,6 +95,9 @@ export class Economy extends Base {
 
   public addMoney(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
+      if (typeof amount !== 'number') throw new Error(Errors.FLAGS.AMOUNT_NUMBER);
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
       await this.db.add(`${this.key(userID, guildID)}.bank`, amount);
@@ -98,6 +107,9 @@ export class Economy extends Base {
 
   public removeMoney(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
+      if (typeof amount !== 'number') throw new Error(Errors.FLAGS.AMOUNT_NUMBER);
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
       await this.db.subtract(`${this.key(userID, guildID)}.bank`, amount);
@@ -107,6 +119,9 @@ export class Economy extends Base {
 
   public transfer(amount: number, from: string, to: string, guildID: string): Promise<User | null> {
     return new Promise(async (resolve) => {
+      if (typeof amount !== 'number') throw new Error(Errors.FLAGS.AMOUNT_NUMBER);
+      if (typeof from !== 'string' || typeof to !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let user = await this.fetch(from);
       if (!user || user.wallet < amount) return resolve(null);
       let fkey = this.key(from, guildID);
@@ -119,6 +134,9 @@ export class Economy extends Base {
 
   public deposit(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
+      if (typeof amount !== 'number') throw new Error(Errors.FLAGS.AMOUNT_NUMBER);
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
       if (user.wallet < amount) return resolve(null);
@@ -131,6 +149,9 @@ export class Economy extends Base {
 
   public withdraw(amount: number, userID: string, guildID?: string): Promise<User | null> {
     return new Promise(async (resolve) => {
+      if (typeof amount !== 'number') throw new Error(Errors.FLAGS.AMOUNT_NUMBER);
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
       if (user.bank < amount) return resolve(null);
@@ -143,6 +164,10 @@ export class Economy extends Base {
 
   public work(userID: string, guildID?: string, options?: WorkOptions): Promise<WorkResponse | null> {
     return new Promise(async (resolve) => {
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
+      if ((options && (typeof options.timeout !== 'number' || typeof options.money?.max !== 'number')) || typeof options?.money?.min !== 'number')
+        throw new Error(Errors.FLAGS.MIN_MAX_AMOUNT);
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
       let timeout = options?.timeout ?? 6 * 60 * 60 * 1000;

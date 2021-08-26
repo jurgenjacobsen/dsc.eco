@@ -20,6 +20,7 @@ import { User } from './structures/User';
 import { FabricsManager } from './managers/FabricsManager';
 import { Item } from './structures/Item';
 import { Fabric } from './structures/Fabric';
+import { Errors } from './structures/Errors';
 
 export {
   EconomyOptions,
@@ -42,4 +43,5 @@ export {
   FabricsManager,
   Fabric,
   Item,
+  Errors,
 };

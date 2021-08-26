@@ -6,6 +6,7 @@ import { Item } from './Item';
 export class Store {
   public eco: Economy;
   public items: Item[];
+
   constructor(eco: Economy) {
     this.eco = eco;
     this.items = [];

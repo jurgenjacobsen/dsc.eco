@@ -6,9 +6,9 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "tsc": "tsc",
-    "docs": "typedoc --theme minimal --out docs src/",
+    "typedoc": "typedoc --theme minimal --out docs src/",
     "pretty": "prettier --config .prettierrc \"./src/**/*.ts\"  \"./lib/**/*.js\" --write",
-    "build": "npm run tsc && npm run pretty && npm run docs"
+    "build": "npm run tsc && npm run pretty && npm run typedoc"
   },
   "repository": {
     "type": "git",
