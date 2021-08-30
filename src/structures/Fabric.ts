@@ -99,15 +99,14 @@ export class Fabric {
   }
 
   private async _update() {
-    let data = await this.fm.fetch(this.user.userID, this.user.guildID ?? undefined);
-    if (!data) return;
-    this.xp = data.xp;
-    this.level = data.level;
-    this.collectable = data.collectable;
-    this.employees = data.employees;
-    this.fabricPayment = data.fabricPayment;
-    this.lastCollect = data.lastCollect;
-    this.user = data.user;
+    let data = await this.fm.fetch(this.user.userID, this.user.guildID);
+    this.xp = data?.xp ?? this.xp;
+    this.level = data?.level ?? this.level;
+    this.collectable = data?.collectable ?? this.collectable;
+    this.employees = data?.employees ?? this.employees;
+    this.fabricPayment = data?.fabricPayment ?? this.fabricPayment;
+    this.lastCollect = data?.lastCollect ?? this.lastCollect;
+    this.user = data?.user ?? this.user;
     return;
   }
 }
