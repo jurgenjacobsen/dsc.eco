@@ -127,7 +127,7 @@ export class Economy extends Base {
       let fkey = this.key(from, guildID);
       let tkey = this.key(to, guildID);
       await this.db.subtract(`${fkey}.wallet`, amount);
-      await this.db.subtract(`${tkey}.bank`, amount);
+      await this.db.add(`${tkey}.bank`, amount);
       return resolve(await this.fetch(from, guildID));
     });
   }
