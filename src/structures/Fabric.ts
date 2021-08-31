@@ -39,7 +39,7 @@ export class Fabric {
   }
 
   public get levelUpXP(): number {
-    return Math.floor(5 * (this.level ^ 2) + 50 * this.level + 100 - this.xp);
+    return Math.floor(this.level * 2.5 * 100);
   }
 
   public get receiveableMoney(): number {
