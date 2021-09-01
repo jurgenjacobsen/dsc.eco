@@ -59,7 +59,7 @@ export class Fabric {
         await this.fm.eco.addMoney(this.receiveableMoney, uid, gid ?? undefined);
         await this.fm.eco.db.set(`${this.fm.eco.key(uid, gid ?? undefined)}.timeouts.fabricCollect`, new Date());
         await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid ?? undefined)}.fabric.xp`, xp);
-        if (this.levelUpXP >= this.levelUpXP) {
+        if (this.xp >= this.levelUpXP) {
           await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid ?? undefined)}.fabric.level`, 1);
         }
         await this._update();
