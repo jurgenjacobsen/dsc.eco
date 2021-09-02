@@ -2,9 +2,8 @@ import { Data } from 'dsc.db';
 import { FabricsManager } from '../managers/FabricsManager';
 import { Errors } from '../structures/Errors';
 import { Store } from '../structures/Store';
-import { User } from '../structures/User';
 import { Base } from './Base';
-import { EconomyOptions, LeaderboardOptions, LeaderboardUser, WorkOptions, WorkResponse } from './interfaces';
+import { EconomyOptions, LeaderboardOptions, LeaderboardUser, User, WorkOptions, WorkResponse } from './interfaces';
 
 export class Economy extends Base {
   constructor(options: EconomyOptions) {

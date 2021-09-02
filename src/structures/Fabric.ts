@@ -1,6 +1,5 @@
-import { EcoUser } from '../main/interfaces';
+import { User } from '../main/interfaces';
 import { FabricsManager } from '../managers/FabricsManager';
-import { User } from './User';
 
 let hour = 1 * 60 * 60 * 1000;
 

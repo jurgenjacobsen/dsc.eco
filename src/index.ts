@@ -1,6 +1,6 @@
 import {
   EconomyOptions,
-  EcoUser,
+  User,
   WorkErr,
   WorkResponse,
   LeaderboardUser,
@@ -16,7 +16,6 @@ import {
 import { Base } from './main/Base';
 import { Economy } from './main/Economy';
 import { Store } from './structures/Store';
-import { User } from './structures/User';
 import { FabricsManager } from './managers/FabricsManager';
 import { Item } from './structures/Item';
 import { Fabric } from './structures/Fabric';
@@ -24,7 +23,7 @@ import { Errors } from './structures/Errors';
 
 export {
   EconomyOptions,
-  EcoUser,
+  User,
   WorkErr,
   WorkResponse,
   LeaderboardUser,
@@ -39,7 +38,6 @@ export {
   Base,
   Economy,
   Store,
-  User,
   FabricsManager,
   Fabric,
   Item,

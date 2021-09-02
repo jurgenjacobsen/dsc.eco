@@ -2,7 +2,6 @@ import { ColorResolvable } from 'discord.js';
 import { Database, Options } from 'dsc.db';
 import { Fabric } from '../structures/Fabric';
 import { Item } from '../structures/Item';
-import { User } from '../structures/User';
 import { MSFormat } from './Base';
 import { Economy } from './Economy';
 
@@ -11,9 +10,9 @@ export interface EconomyOptions {
   items?: Item[];
 }
 
-export interface EcoUser {
+export interface User {
   userID: string;
-  guildID?: string | null;
+  guildID?: string;
   wallet: number;
   bank: number;
   inventory: string[];
@@ -75,7 +74,7 @@ export interface ItemData {
 }
 
 export interface ItemBuyCallback {
-  (eco: Economy, user: EcoUser): Promise<any> | any;
+  (eco: Economy, user: User): Promise<any> | any;
 }
 
 export interface CustomPublish {
