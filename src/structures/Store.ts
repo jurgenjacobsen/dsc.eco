@@ -85,6 +85,7 @@ export class Store {
       } else {
         return resolve({ userID, guildID, err: 'NOT_ENOUGH_MONEY' });
       }
+      await this.eco.db.push(`${this.eco.key(userID, guildID)}.inventory`, item.id);
       return resolve({ userID, guildID, err: null });
     });
   }
