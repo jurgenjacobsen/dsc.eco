@@ -42,11 +42,11 @@ export class Fabric {
   }
 
   public get receiveableMoney(): number {
-    return Math.floor(5 * (this.level ^ 2) + 50 * this.level + 100 - this.xp + this.employees * 1.5);
+    return Math.floor(this.employees * 5 + this.level * 100 + this.xp / 2);
   }
 
   public get valueToPay(): number {
-    return Math.floor(this.level * (this.employees * 0.5) * 100);
+    return Math.floor(this.level * (this.employees * 0.25) * 25);
   }
 
   public collect(): Promise<Fabric> {
