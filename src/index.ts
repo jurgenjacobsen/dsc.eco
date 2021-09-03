@@ -12,6 +12,7 @@ import {
   ItemBuyCallback,
   ItemData,
   CustomPublish,
+  CollectOptions,
 } from './main/interfaces';
 import { Base } from './main/Base';
 import { Economy } from './main/Economy';
@@ -22,6 +23,7 @@ import { Fabric } from './structures/Fabric';
 import { Errors } from './structures/Errors';
 
 export {
+  CollectOptions,
   EconomyOptions,
   User,
   CollectErr,

@@ -26,7 +26,7 @@ export interface User {
   };
 }
 
-export interface WorkOptions {
+export interface CollectOptions {
   timeout?: number;
   money?: {
     min?: number;

@@ -3,7 +3,7 @@ import { FabricsManager } from '../managers/FabricsManager';
 import { Errors } from '../structures/Errors';
 import { Store } from '../structures/Store';
 import { Base } from './Base';
-import { CollectResponse, EconomyOptions, LeaderboardOptions, LeaderboardUser, User, WorkOptions } from './interfaces';
+import { CollectOptions, CollectResponse, EconomyOptions, LeaderboardOptions, LeaderboardUser, User } from './interfaces';
 
 export class Economy extends Base {
   constructor(options: EconomyOptions) {
@@ -161,7 +161,7 @@ export class Economy extends Base {
     });
   }
 
-  public work(userID: string, guildID?: string, options?: WorkOptions): Promise<CollectResponse | null> {
+  public work(userID: string, guildID?: string, options?: CollectOptions): Promise<CollectResponse | null> {
     return new Promise(async (resolve) => {
       if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
       if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
@@ -186,7 +186,7 @@ export class Economy extends Base {
     });
   }
 
-  public daily(userID: string, guildID?: string, options?: WorkOptions): Promise<CollectResponse | null> {
+  public daily(userID: string, guildID?: string, options?: CollectOptions): Promise<CollectResponse | null> {
     return new Promise(async (resolve) => {
       if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
       if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
@@ -196,15 +196,15 @@ export class Economy extends Base {
       if (!user) return resolve(null);
       let timeout = options?.timeout ?? 20 * 60 * 60 * 1000;
       let money = this.random(options?.money?.min ?? 150, options?.money?.max ?? 350);
-      if (user.timeouts.work && new Date().getTime() - user.timeouts.work.getTime() < timeout) {
+      if (user.timeouts.daily && new Date().getTime() - user.timeouts.daily.getTime() < timeout) {
         return resolve({
           err: 'COOLDOWN',
           user: user,
-          remaining: this.ms(timeout - (Date.now() - user.timeouts.work.getTime())),
+          remaining: this.ms(timeout - (Date.now() - user.timeouts.daily.getTime())),
         });
       }
 
-      await this.db.set(`${this.key(userID, guildID)}.timeouts.work`, new Date());
+      await this.db.set(`${this.key(userID, guildID)}.timeouts.daily`, new Date());
       await this.db.add(`${this.key(userID, guildID)}.wallet`, money);
 
       return resolve({ err: null, user: (await this.fetch(userID, guildID)) as User });
