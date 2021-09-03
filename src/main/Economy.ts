@@ -3,7 +3,7 @@ import { FabricsManager } from '../managers/FabricsManager';
 import { Errors } from '../structures/Errors';
 import { Store } from '../structures/Store';
 import { Base } from './Base';
-import { EconomyOptions, LeaderboardOptions, LeaderboardUser, User, WorkOptions, WorkResponse } from './interfaces';
+import { CollectResponse, EconomyOptions, LeaderboardOptions, LeaderboardUser, User, WorkOptions } from './interfaces';
 
 export class Economy extends Base {
   constructor(options: EconomyOptions) {
@@ -161,7 +161,7 @@ export class Economy extends Base {
     });
   }
 
-  public work(userID: string, guildID?: string, options?: WorkOptions): Promise<WorkResponse | null> {
+  public work(userID: string, guildID?: string, options?: WorkOptions): Promise<CollectResponse | null> {
     return new Promise(async (resolve) => {
       if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
       if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
@@ -169,8 +169,33 @@ export class Economy extends Base {
         throw new Error(Errors.FLAGS.MIN_MAX_AMOUNT);
       let user = await this.fetch(userID, guildID);
       if (!user) return resolve(null);
-      let timeout = options?.timeout ?? 6 * 60 * 60 * 1000;
+      let timeout = options?.timeout ?? 5 * 60 * 60 * 1000;
       let money = this.random(options?.money?.min ?? 50, options?.money?.max ?? 150);
+      if (user.timeouts.work && new Date().getTime() - user.timeouts.work.getTime() < timeout) {
+        return resolve({
+          err: 'COOLDOWN',
+          user: user,
+          remaining: this.ms(timeout - (Date.now() - user.timeouts.work.getTime())),
+        });
+      }
+
+      await this.db.set(`${this.key(userID, guildID)}.timeouts.work`, new Date());
+      await this.db.add(`${this.key(userID, guildID)}.wallet`, money);
+
+      return resolve({ err: null, user: (await this.fetch(userID, guildID)) as User });
+    });
+  }
+
+  public daily(userID: string, guildID?: string, options?: WorkOptions): Promise<CollectResponse | null> {
+    return new Promise(async (resolve) => {
+      if (!userID || typeof userID !== 'string') throw new Error(Errors.FLAGS.USER_ID_STRING);
+      if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
+      if ((options && (typeof options.timeout !== 'number' || typeof options.money?.max !== 'number')) || typeof options?.money?.min !== 'number')
+        throw new Error(Errors.FLAGS.MIN_MAX_AMOUNT);
+      let user = await this.fetch(userID, guildID);
+      if (!user) return resolve(null);
+      let timeout = options?.timeout ?? 20 * 60 * 60 * 1000;
+      let money = this.random(options?.money?.min ?? 150, options?.money?.max ?? 350);
       if (user.timeouts.work && new Date().getTime() - user.timeouts.work.getTime() < timeout) {
         return resolve({
           err: 'COOLDOWN',

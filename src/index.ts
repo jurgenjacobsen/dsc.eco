@@ -1,8 +1,8 @@
 import {
   EconomyOptions,
   User,
-  WorkErr,
-  WorkResponse,
+  CollectErr,
+  CollectResponse,
   LeaderboardUser,
   LeaderboardOptions,
   BuyErr,
@@ -24,8 +24,8 @@ import { Errors } from './structures/Errors';
 export {
   EconomyOptions,
   User,
-  WorkErr,
-  WorkResponse,
+  CollectErr,
+  CollectResponse,
   LeaderboardUser,
   LeaderboardOptions,
   BuyErr,

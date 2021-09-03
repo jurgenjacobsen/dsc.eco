@@ -34,10 +34,10 @@ export interface WorkOptions {
   };
 }
 
-export type WorkErr = 'COOLDOWN' | null;
+export type CollectErr = 'COOLDOWN' | null;
 
-export interface WorkResponse {
-  err: WorkErr;
+export interface CollectResponse {
+  err: CollectErr;
   user: User;
   remaining?: MSFormat;
 }
