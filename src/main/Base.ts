@@ -1,10 +1,11 @@
 import { Database } from 'dsc.db';
 import { EventEmitter } from 'events';
+import { User } from './interfaces';
 import { EconomyOptions } from './interfaces';
 
 export class Base extends EventEmitter {
   public options: EconomyOptions;
-  public db: Database;
+  public db: Database<User>;
   constructor(options: EconomyOptions) {
     super();
 

@@ -38,7 +38,7 @@ export class Economy extends Base {
       let key = this.key(userID, guildID);
       let raw = await this.db.set(key, {
         userID: userID,
-        guildID: guildID ?? null,
+        guildID: guildID ?? undefined,
         wallet: 0,
         bank: 0,
         inventory: [],
@@ -62,7 +62,7 @@ export class Economy extends Base {
 
   public leaderboard(options: LeaderboardOptions): Promise<LeaderboardUser[] | null> {
     return new Promise(async (resolve) => {
-      let raw = typeof options.guildID !== 'string' ? await this.db.list() : ((await this.db.schema.find({ 'data.guildID': options.guildID })) as Data[]);
+      let raw = typeof options.guildID !== 'string' ? await this.db.list() : ((await this.db.schema.find({ 'data.guildID': options.guildID })) as Data<User>[]);
       let arr: LeaderboardUser[] = [];
       if (!raw) return resolve(null);
       raw
@@ -86,7 +86,7 @@ export class Economy extends Base {
     return new Promise(async (resolve) => {
       if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let raw =
-        typeof guildID !== 'string' ? ((await this.db.schema.find({ 'data.guildID': null })) as Data[]) : ((await this.db.schema.find({ 'data.guildID': guildID })) as Data[]);
+        typeof guildID !== 'string' ? ((await this.db.schema.find({ 'data.guildID': null })) as Data<User>[]) : ((await this.db.schema.find({ 'data.guildID': guildID })) as Data<User>[]);
       if (!raw) return resolve(null);
       return resolve(raw.map((r) => r.data));
     });

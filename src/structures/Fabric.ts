@@ -51,11 +51,11 @@ export class Fabric {
 
   public collect(): Promise<Fabric> {
     return new Promise(async (resolve) => {
-      let gid = this.user.guildID ?? undefined;
+      let gid = this.user.guildID;
       let uid = this.user.userID;
       if (this.collectable) {
         let xp = this.fm.eco.random(20, 35);
-        await this.fm.eco.addMoney(this.receiveableMoney, uid, gid ?? undefined);
+        await this.fm.eco.addMoney(this.receiveableMoney, uid, gid);
         await this.fm.eco.db.set(`${this.fm.eco.key(uid, gid ?? undefined)}.timeouts.fabricCollect`, new Date());
         await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid ?? undefined)}.fabric.xp`, xp);
         if (this.xp >= this.levelUpXP) {
