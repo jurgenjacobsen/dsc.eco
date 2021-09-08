@@ -56,10 +56,10 @@ export class Fabric {
       if (this.collectable) {
         let xp = this.fm.eco.random(20, 35);
         await this.fm.eco.addMoney(this.receiveableMoney, uid, gid);
-        await this.fm.eco.db.set(`${this.fm.eco.key(uid, gid ?? undefined)}.timeouts.fabricCollect`, new Date());
-        await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid ?? undefined)}.fabric.xp`, xp);
-        if (this.xp >= this.levelUpXP) {
-          await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid ?? undefined)}.fabric.level`, 1);
+        await this.fm.eco.db.set(`${this.fm.eco.key(uid, gid)}.timeouts.fabricCollect`, new Date());
+        await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid)}.fabric.xp`, xp);
+        if (this.xp + xp >= this.levelUpXP) {
+          await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid)}.fabric.level`, 1);
         }
         await this._update();
         return resolve(this);

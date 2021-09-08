@@ -6,7 +6,7 @@ import { MSFormat } from './Base';
 import { Economy } from './Economy';
 
 export interface EconomyOptions {
-  db: Database | Options;
+  db: Database<User> | Options;
   items?: Item[];
 }
 

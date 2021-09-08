@@ -86,7 +86,9 @@ export class Economy extends Base {
     return new Promise(async (resolve) => {
       if (guildID && typeof guildID !== 'string') throw new Error(Errors.FLAGS.GUILD_ID_STRING);
       let raw =
-        typeof guildID !== 'string' ? ((await this.db.schema.find({ 'data.guildID': null })) as Data<User>[]) : ((await this.db.schema.find({ 'data.guildID': guildID })) as Data<User>[]);
+        typeof guildID !== 'string'
+          ? ((await this.db.schema.find({ 'data.guildID': null })) as Data<User>[])
+          : ((await this.db.schema.find({ 'data.guildID': guildID })) as Data<User>[]);
       if (!raw) return resolve(null);
       return resolve(raw.map((r) => r.data));
     });

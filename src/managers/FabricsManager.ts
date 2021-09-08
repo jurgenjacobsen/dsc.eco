@@ -1,6 +1,6 @@
 import { Data } from 'dsc.db';
 import { Economy } from '../main/Economy';
-import { FabricsCache, GuildFabricsCache } from '../main/interfaces';
+import { FabricsCache, GuildFabricsCache, User } from '../main/interfaces';
 import { Fabric } from '../structures/Fabric';
 
 export class FabricsManager {
@@ -31,10 +31,10 @@ export class FabricsManager {
       this.cache.set(u.userID, f);
     });
 
-    let guilds = await (this.eco.db.schema.find() as Promise<Data[]>);
+    let guilds = await (this.eco.db.schema.find() as Promise<Data<User>[]>);
     let gids: string[] = [];
     guilds.forEach((g) => {
-      if (!gids.includes(g.data.guildID) && g.data.guildID !== null) gids.push(g.data.guildID);
+      if (!gids.includes(g.data.guildID as string) && g.data.guildID !== null) gids.push(g.data.guildID as string);
     });
 
     if (gids.length > 2048) return;
