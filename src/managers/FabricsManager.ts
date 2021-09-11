@@ -24,6 +24,13 @@ export class FabricsManager {
     });
   }
 
+  public ensure(userID: string, guildID?: string): Promise<Fabric> {
+    return new Promise(async (resolve) => {
+      let user = await this.eco.ensure(userID, guildID);
+      return resolve(new Fabric(this, user));
+    });
+  }
+
   private async __update() {
     let users = await this.eco.list();
     users?.forEach((u) => {

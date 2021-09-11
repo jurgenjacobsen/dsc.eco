@@ -2723,6 +2723,9 @@ img {
 					<a href="managers_FabricsManager.FabricsManager.html#__update" class="tsd-kind-icon">__update</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="managers_FabricsManager.FabricsManager.html#ensure" class="tsd-kind-icon">ensure</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="managers_FabricsManager.FabricsManager.html#fetch" class="tsd-kind-icon">fetch</a>
 				</li>
 			</ul>
@@ -2761,6 +2764,7 @@ img {
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="managers_FabricsManager.FabricsManager.html#__update" class="tsd-kind-icon">__update</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="managers_FabricsManager.FabricsManager.html#ensure" class="tsd-kind-icon">ensure</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="managers_FabricsManager.FabricsManager.html#fetch" class="tsd-kind-icon">fetch</a></li>
 						</ul>
 					</section>
@@ -2779,7 +2783,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/345403c/src/managers/FabricsManager.ts#L10">src/managers/FabricsManager.ts:10</a></li>
+								<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/840a71e/src/managers/FabricsManager.ts#L10">src/managers/FabricsManager.ts:10</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2801,7 +2805,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">cache<span class="tsd-signature-symbol">:</span> <a href="../modules/main_interfaces.html#FabricsCache" class="tsd-signature-type" data-tsd-kind="Type alias">FabricsCache</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/345403c/src/managers/FabricsManager.ts#L8">src/managers/FabricsManager.ts:8</a></li>
+						<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/840a71e/src/managers/FabricsManager.ts#L8">src/managers/FabricsManager.ts:8</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2811,7 +2815,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">eco<span class="tsd-signature-symbol">:</span> <a href="main_Economy.Economy.html" class="tsd-signature-type" data-tsd-kind="Class">Economy</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/345403c/src/managers/FabricsManager.ts#L7">src/managers/FabricsManager.ts:7</a></li>
+						<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/840a71e/src/managers/FabricsManager.ts#L7">src/managers/FabricsManager.ts:7</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2821,7 +2825,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">guilds<span class="tsd-signature-symbol">:</span> <a href="../modules/main_interfaces.html#GuildFabricsCache" class="tsd-signature-type" data-tsd-kind="Type alias">GuildFabricsCache</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/345403c/src/managers/FabricsManager.ts#L9">src/managers/FabricsManager.ts:9</a></li>
+						<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/840a71e/src/managers/FabricsManager.ts#L9">src/managers/FabricsManager.ts:9</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2838,10 +2842,36 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/345403c/src/managers/FabricsManager.ts#L27">src/managers/FabricsManager.ts:27</a></li>
+								<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/840a71e/src/managers/FabricsManager.ts#L34">src/managers/FabricsManager.ts:34</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="ensure" class="tsd-anchor"></a>
+				<h3>ensure</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">ensure<span class="tsd-signature-symbol">(</span>userID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, guildID<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="structures_Fabric.Fabric.html" class="tsd-signature-type" data-tsd-kind="Class">Fabric</a><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/840a71e/src/managers/FabricsManager.ts#L27">src/managers/FabricsManager.ts:27</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>userID: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> guildID: <span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="structures_Fabric.Fabric.html" class="tsd-signature-type" data-tsd-kind="Class">Fabric</a><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -2855,7 +2885,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/345403c/src/managers/FabricsManager.ts#L19">src/managers/FabricsManager.ts:19</a></li>
+								<li>Defined in <a href="https://github.com/jurgenjacobsen/dsc.eco/blob/840a71e/src/managers/FabricsManager.ts#L19">src/managers/FabricsManager.ts:19</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>

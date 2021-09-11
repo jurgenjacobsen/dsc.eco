@@ -51,7 +51,7 @@ export class Fabric {
     this.fm = fm;
   }
 
-  public get valutation(): number {
+  public get valuation(): number {
     return Math.floor(((365 * 24) / this.timeout) * this.receiveableMoney);
   }
 
@@ -69,7 +69,7 @@ export class Fabric {
 
   public sellPrice(percentage: number): number {
     if (!(percentage > -1 && percentage <= 100)) throw new Error('Percentage should be a value between 0 and 100');
-    return (this.valutation / 100) * percentage;
+    return (this.valuation / 100) * percentage;
   }
 
   public collect(): Promise<Fabric> {
@@ -120,10 +120,27 @@ export class Fabric {
     });
   }
 
+  public sell(percentage: number): Promise<Fabric | null> {
+    return new Promise(async (resolve) => {
+      if (this.sold) return resolve(null);
+      if (!(percentage > -1 && percentage <= 100)) return resolve(null);
+
+      let amount = this.sellPrice(percentage);
+
+      await this.reset();
+      await this.fm.eco.db.set(`${this.fm.eco.key(this.user.userID, this.user.guildID)}.timeouts.soldFabric`, new Date());
+      await this.fm.eco.db.set(`${this.fm.eco.key(this.user.userID, this.user.guildID)}.fabric.soldPercentage`, percentage);
+      await this.fm.eco.addMoney(amount, this.user.userID, this.user.guildID);
+      await this._update();
+      return this;
+    });
+  }
+
   public reset(): Promise<Fabric> {
     return new Promise(async (resolve) => {
-      await this.fm.eco.delete(this.user.userID, this.user.guildID);
-      let raw = await this.fm.eco.ensure(this.user.userID, this.user.userID);
+      let raw = await this.fm.eco.db
+        .set(`${this.fm.eco.key(this.user.userID, this.user.guildID)}.fabric`, { xp: 0, level: 1, employees: 0, soldPercentage: null })
+        .then((r) => r.data);
       return resolve(new Fabric(this.fm, raw));
     });
   }
