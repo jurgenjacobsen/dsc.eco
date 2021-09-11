@@ -23,6 +23,7 @@ export interface User {
     xp: number;
     level: number;
     employees: number;
+    soldPercentage: number | null;
   };
 }
 
