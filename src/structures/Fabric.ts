@@ -22,9 +22,9 @@ export class Fabric {
     this.collectable = true;
     this.latePayment = false;
 
-    this.timeout = (1 * (this.level + 2))
+    this.timeout = 1 * (this.level + 2);
 
-    if (data.timeouts.fabricPayment && (new Date().getTime() - data.timeouts.fabricPayment.getTime()) > (this.timeout * hour)) {
+    if (data.timeouts.fabricPayment && new Date().getTime() - data.timeouts.fabricPayment.getTime() > this.timeout * hour) {
       this.latePayment = true;
     }
 
@@ -42,7 +42,7 @@ export class Fabric {
   }
 
   public get valuation(): number {
-    return Math.floor(((24 / this.timeout) * 31 * 12) * this.receiveableMoney);
+    return Math.floor((24 / this.timeout) * 31 * 12 * this.receiveableMoney);
   }
 
   public get levelUpXP(): number {
