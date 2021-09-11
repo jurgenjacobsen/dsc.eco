@@ -12,6 +12,7 @@ export class Fabric {
   public lastCollect: Date | null;
   public fabricPayment: Date | null;
   public user: User;
+  public timeout: number;
   private fm: FabricsManager;
   constructor(fm: FabricsManager, data: User) {
     this.level = data.fabric.level;
@@ -20,7 +21,10 @@ export class Fabric {
 
     this.collectable = true;
     this.latePayment = false;
-    if (data.timeouts.fabricPayment && new Date().getTime() - data.timeouts.fabricPayment.getTime() > 7 * 24 * 60 * 60 * 1000) {
+
+    this.timeout = (1 * (this.level + 2))
+
+    if (data.timeouts.fabricPayment && (new Date().getTime() - data.timeouts.fabricPayment.getTime()) > (this.timeout * hour)) {
       this.latePayment = true;
     }
 
@@ -37,12 +41,16 @@ export class Fabric {
     this.fm = fm;
   }
 
+  public get valuation(): number {
+    return Math.floor(((24 / this.timeout) * 31 * 12) * this.receiveableMoney);
+  }
+
   public get levelUpXP(): number {
     return Math.floor(this.level * 2.5 * 100);
   }
 
   public get receiveableMoney(): number {
-    return Math.floor(this.employees * 5 + this.level * 100 + this.xp / 2);
+    return Math.floor((this.employees * 5 + this.level * 100 + this.xp / 2) * 0.75);
   }
 
   public get valueToPay(): number {
