@@ -25,7 +25,7 @@ export class Fabric {
     this.timeout = 1 * (this.level + 2);
 
     this.collectable = true;
-    this.latePayment = true;
+    this.latePayment = false;
 
     this.sold = data.fabric.soldPercentage;
 
@@ -34,7 +34,7 @@ export class Fabric {
     }
 
     if (data.timeouts.fabricPayment && new Date().getTime() - data.timeouts.fabricPayment.getTime() > 7 * 24 * hour) {
-      this.latePayment = false;
+      this.latePayment = true;
       this.collectable = false;
     }
 
