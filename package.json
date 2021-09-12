@@ -1,6 +1,6 @@
 {
   "name": "dsc.eco",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "A quick way to implement economy features to your discord bot",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
