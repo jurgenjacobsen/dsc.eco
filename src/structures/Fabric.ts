@@ -15,6 +15,7 @@ export class Fabric {
   public sold: number | null;
   public user: User;
   public timeout: number;
+  public sellTimeout: number;
   private fm: FabricsManager;
   constructor(fm: FabricsManager, data: User) {
     this.level = data.fabric.level;
@@ -37,7 +38,9 @@ export class Fabric {
       this.collectable = false;
     }
 
-    let sold_timeout = this.level * month * 2;
+    this.sellTimeout = this.level * 3 + 1;
+
+    let sold_timeout = this.sellTimeout * month;
     let not_in_sell_cooldown = data.timeouts.soldFabric && new Date().getTime() - data.timeouts.soldFabric.getTime() > sold_timeout;
 
     if (this.sold && not_in_sell_cooldown) {
