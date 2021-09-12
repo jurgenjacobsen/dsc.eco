@@ -117,7 +117,7 @@ export class Fabric {
 
   public pay(): Promise<Fabric> {
     return new Promise(async (resolve) => {
-      if (this.valueToPay >= this.user.bank && this.latePayment !== false) {
+      if (this.valueToPay >= this.user.bank && this.latePayment) {
         await this.fm.eco.removeMoney(this.valueToPay, this.user.userID, this.user.guildID ?? undefined);
         await this.fm.eco.db.set(`${this.fm.eco.key(this.user.userID, this.user.guildID ?? undefined)}.timeouts.fabricPayment`, new Date());
       }
