@@ -42,7 +42,7 @@ export class Economy extends Base {
         wallet: 0,
         bank: 0,
         inventory: [],
-        timeouts: { work: null, fabric: null, soldFabric: null },
+        timeouts: { work: null, fabric: null, soldFabric: null, fabricPayment: new Date() },
         fabric: { xp: 0, level: 1, employees: 0, soldPercentage: null },
       } as User);
       return resolve(raw.data);

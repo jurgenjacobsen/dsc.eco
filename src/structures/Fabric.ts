@@ -88,6 +88,9 @@ export class Fabric {
         await this.fm.eco.addMoney(this.receiveableMoney, uid, gid);
         await this.fm.eco.db.set(`${this.fm.eco.key(uid, gid)}.timeouts.fabric`, new Date());
         await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid)}.fabric.xp`, xp);
+        if (!this.user.timeouts.fabricPayment) {
+          await this.fm.eco.db.set(`${this.fm.eco.key(uid, gid)}.timeouts.fabricPayment`, new Date());
+        }
         if (this.xp + xp >= this.levelUpXP) {
           await this.fm.eco.db.add(`${this.fm.eco.key(uid, gid)}.fabric.level`, 1);
         }
