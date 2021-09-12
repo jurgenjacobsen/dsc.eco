@@ -37,10 +37,10 @@ export class Fabric {
       this.collectable = false;
     }
 
-    let sold_timeout = 0;
-    let not_in_sell_cooldonw = data.timeouts.soldFabric && new Date().getTime() - data.timeouts.soldFabric.getTime() > sold_timeout;
+    let sold_timeout = this.level * month * 2;
+    let not_in_sell_cooldown = data.timeouts.soldFabric && new Date().getTime() - data.timeouts.soldFabric.getTime() > sold_timeout;
 
-    if (this.sold && not_in_sell_cooldonw) {
+    if (this.sold && not_in_sell_cooldown) {
       this.collectable = false;
     }
 
@@ -61,6 +61,10 @@ export class Fabric {
 
   public get receiveableMoney(): number {
     return Math.floor((this.employees * 5 + this.level * 100 + this.xp / 2) * 0.75);
+  }
+
+  public get employeePrice(): number {
+    return this.level * 150;
   }
 
   public get valueToPay(): number {
@@ -96,14 +100,13 @@ export class Fabric {
   }
 
   public hire(): Promise<Fabric> {
-    let ePrice = 120 * this.level;
     return new Promise(async (resolve) => {
       let av = this.level * 20;
       if (this.employees >= av) {
         return resolve(this);
       } else {
-        if (this.user.bank) {
-          await this.fm.eco.removeMoney(ePrice, this.user.userID, this.user.guildID ?? undefined);
+        if (this.user.bank >= this.employeePrice) {
+          await this.fm.eco.removeMoney(this.employeePrice, this.user.userID, this.user.guildID ?? undefined);
           await this.fm.eco.db.add(`${this.fm.eco.key(this.user.userID, this.user.guildID ?? undefined)}.fabric.employees`, 1);
         }
       }
