@@ -25,7 +25,7 @@ export class Fabric {
     this.timeout = 1 * (this.level + 2);
 
     this.collectable = true;
-    this.latePayment = false;
+    this.latePayment = true;
 
     this.sold = data.fabric.soldPercentage;
 
@@ -33,17 +33,14 @@ export class Fabric {
       this.collectable = false;
     }
 
-    if (data.timeouts.fabricPayment && !(new Date().getTime() - data.timeouts.fabricPayment.getTime() > 7 * 24 * hour)) {
-      this.latePayment = true;
+    if (data.timeouts.fabricPayment && new Date().getTime() - data.timeouts.fabricPayment.getTime() > 7 * 24 * hour) {
+      this.latePayment = false;
       this.collectable = false;
     }
 
     this.sellTimeout = this.level * 3 + 1;
 
-    let sold_timeout = this.sellTimeout * month;
-    let not_in_sell_cooldown = data.timeouts.soldFabric && new Date().getTime() - data.timeouts.soldFabric.getTime() > sold_timeout;
-
-    if (this.sold && not_in_sell_cooldown) {
+    if (this.sold && data.timeouts.soldFabric && new Date().getTime() - data.timeouts.soldFabric.getTime() < this.sellTimeout * month) {
       this.collectable = false;
     }
 
@@ -141,7 +138,7 @@ export class Fabric {
       await this.fm.eco.db.set(`${this.fm.eco.key(this.user.userID, this.user.guildID)}.fabric.soldPercentage`, percentage);
       await this.fm.eco.addMoney(amount, this.user.userID, this.user.guildID);
       await this._update();
-      return this;
+      return resolve(this);
     });
   }
 
