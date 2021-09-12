@@ -23,32 +23,26 @@ export class Fabric {
 
     this.timeout = 1 * (this.level + 2);
 
-    this.collectable = false;
+    this.collectable = true;
     this.latePayment = false;
 
-    this.sold = data.fabric.soldPercentage ?? null;
+    this.sold = data.fabric.soldPercentage;
 
-    let sold_timeout = 0;
-    let not_in_sell_cooldonw = data.timeouts.soldFabric && (new Date().getTime() - data.timeouts.soldFabric.getTime()) > sold_timeout;
-
-    if(data.timeouts.fabric && (new Date().getTime() - data.timeouts.fabric.getTime()) > (this.timeout * hour)) {
-      if(data.timeouts.fabricPayment && new Date().getTime() - data.timeouts.fabricPayment.getTime() < 7 * 24 * hour) {
-        if(this.sold && this.sold > 0 && not_in_sell_cooldonw) {
-          this.collectable = true;
-        }
-      } else {
-        this.latePayment = true;
-      }
+    if (data.timeouts.fabric && !(new Date().getTime() - data.timeouts.fabric.getTime() > this.timeout * hour)) {
+      this.collectable = false;
     }
 
-    /*
-
-    let soldMonthTimeout = this.sold ? Math.floor(this.sold / 10) * month + month : undefined;
-    let soldTimeout = data.timeouts.soldPercentage && soldMonthTimeout && new Date().getTime() - data.timeouts.soldPercentage.getDate() > soldMonthTimeout ? true : false;
-
-    if (this.sold && this.sold > 0 && soldTimeout && soldTimeout) {
+    if (data.timeouts.fabricPayment && !(new Date().getTime() - data.timeouts.fabricPayment.getTime() > 7 * 24 * hour)) {
+      this.latePayment = true;
       this.collectable = false;
-    }*/
+    }
+
+    let sold_timeout = 0;
+    let not_in_sell_cooldonw = data.timeouts.soldFabric && new Date().getTime() - data.timeouts.soldFabric.getTime() > sold_timeout;
+
+    if (this.sold && not_in_sell_cooldonw) {
+      this.collectable = false;
+    }
 
     this.lastCollect = data.timeouts.fabric ?? null;
     this.fabricPayment = data.timeouts.fabricPayment ?? null;
@@ -70,7 +64,10 @@ export class Fabric {
   }
 
   public get valueToPay(): number {
-    return Math.floor(this.level * (this.employees * 0.25) * 25);
+    let x = this.level * (this.employees * 0.25) * 25;
+    let y = this.user.timeouts.fabricPayment ? (new Date().getTime() - this.user.timeouts.fabricPayment.getTime()) / (24 * hour) : false;
+    let xy = y ? x + y * (this.level * 250) : x;
+    return Math.floor(xy);
   }
 
   public sellPrice(percentage: number): number {
