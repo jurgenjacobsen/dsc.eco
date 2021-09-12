@@ -21,28 +21,34 @@ export class Fabric {
     this.xp = data.fabric.xp;
     this.employees = data.fabric.employees;
 
-    this.collectable = true;
-    this.latePayment = false;
-
     this.timeout = 1 * (this.level + 2);
 
-    if (data.timeouts.fabric && !(new Date().getTime() - data.timeouts.fabric.getTime() > this.timeout * hour)) {
-      this.collectable = false;
-    }
-
-    if (data.timeouts.fabricPayment && new Date().getTime() - data.timeouts.fabricPayment.getTime() > 7 * 24 * hour) {
-      this.latePayment = true;
-      this.collectable = false;
-    }
+    this.collectable = false;
+    this.latePayment = false;
 
     this.sold = data.fabric.soldPercentage ?? null;
+
+    let sold_timeout = 0;
+    let not_in_sell_cooldonw = data.timeouts.soldFabric && (new Date().getTime() - data.timeouts.soldFabric.getTime()) > sold_timeout;
+
+    if(data.timeouts.fabric && (new Date().getTime() - data.timeouts.fabric.getTime()) > (this.timeout * hour)) {
+      if(data.timeouts.fabricPayment && new Date().getTime() - data.timeouts.fabricPayment.getTime() < 7 * 24 * hour) {
+        if(this.sold && this.sold > 0 && not_in_sell_cooldonw) {
+          this.collectable = true;
+        }
+      } else {
+        this.latePayment = true;
+      }
+    }
+
+    /*
 
     let soldMonthTimeout = this.sold ? Math.floor(this.sold / 10) * month + month : undefined;
     let soldTimeout = data.timeouts.soldPercentage && soldMonthTimeout && new Date().getTime() - data.timeouts.soldPercentage.getDate() > soldMonthTimeout ? true : false;
 
     if (this.sold && this.sold > 0 && soldTimeout && soldTimeout) {
       this.collectable = false;
-    }
+    }*/
 
     this.lastCollect = data.timeouts.fabric ?? null;
     this.fabricPayment = data.timeouts.fabricPayment ?? null;
