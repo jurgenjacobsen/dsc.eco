@@ -70,7 +70,7 @@ export class Fabric {
   public get valueToPay(): number {
     let x = this.level * (this.employees * 0.25) * 25;
     let y = this.user.timeouts.fabricPayment ? (new Date().getTime() - this.user.timeouts.fabricPayment.getTime()) / (24 * hour) : false;
-    let xy = y ? x + y * (this.level * 250) : x;
+    let xy = (y ? x + y * (this.level * 250) : x) * 0.25;
     return Math.floor(xy);
   }
 
