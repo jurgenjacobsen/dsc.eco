@@ -78,7 +78,7 @@ export class Fabric {
     let z = 0;
 
     /* Total resultante */
-    let xyz = (y ? x + y * 250 : x) + z;
+    let xyz = (y ? x + (y >= 7 ? y - 7 : 1) * 150 : x) + z;
 
     return Math.floor(xyz);
   }
