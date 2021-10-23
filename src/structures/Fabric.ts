@@ -60,7 +60,7 @@ export class Fabric {
   }
 
   public get receiveableMoney(): number {
-    return Math.floor((this.employees * 5 + this.level * 100 + this.xp / 2) * 0.5);
+    return Math.floor((this.employees * 5 + this.level * 100 + this.xp / 2) * 0.6);
   }
 
   public get employeePrice(): number {
