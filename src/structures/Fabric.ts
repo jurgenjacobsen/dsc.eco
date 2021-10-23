@@ -60,7 +60,7 @@ export class Fabric {
   }
 
   public get receiveableMoney(): number {
-    return Math.floor((this.employees * 5 + this.level * 100 + this.xp / 2) * 0.75);
+    return Math.floor((this.employees * 5 + this.level * 100 + this.xp / 2) * 0.5);
   }
 
   public get employeePrice(): number {
@@ -68,10 +68,19 @@ export class Fabric {
   }
 
   public get valueToPay(): number {
-    let x = this.level * (this.employees * 0.25) * 25;
+    /* Valor gerado apartir do nível e empregados */
+    let x = this.level * (this.employees * 0.25) * 20;
+
+    /* Tempo sem pagar as taxas (dias) */
     let y = this.user.timeouts.fabricPayment ? (new Date().getTime() - this.user.timeouts.fabricPayment.getTime()) / (24 * hour) : false;
-    let xy = (y ? x + y * (this.level * 250) : x) * 0.25;
-    return Math.floor(xy);
+
+    /* Nao definido ainda */
+    let z = 0;
+
+    /* Total resultante */
+    let xyz = (y ? x + y * 250 : x) + z;
+
+    return Math.floor(xyz);
   }
 
   public sellPrice(percentage: number): number {
